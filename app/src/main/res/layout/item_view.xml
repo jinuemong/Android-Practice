@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/design_default_color_error"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/design_default_color_primary_dark"/>
+    <TextView
+        android:textSize="30sp"
+        android:id="@+id/car_name"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/design_default_color_on_secondary" />
+
+    <TextView
+        android:textSize="30sp"
+        android:id="@+id/car_engine"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:gravity="center" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/design_default_color_primary_dark"/>
+</LinearLayout>
