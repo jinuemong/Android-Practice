@@ -56,4 +56,5 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.6.4'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.4'
     //통신 라이브러리 중 가장 많이 사용되는 대표적인 라이브러리 ( Squareup 사의 라이브러리)
+    implementation 'androidx.fragment:fragment-ktx:1.5.3'
 }
