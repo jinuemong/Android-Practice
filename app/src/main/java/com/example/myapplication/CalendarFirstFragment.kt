@@ -7,12 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 
+//calendarFirst 에서 viewpager - calendarStateAdapter 로 CalendarFragment 에 연결
 class CalendarFirstFragment : Fragment() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +24,10 @@ class CalendarFirstFragment : Fragment() {
         val calendarStateAdapter = CalendarStateAdapter(requireActivity())
         viewPager.adapter = calendarStateAdapter
         viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
+        calendarStateAdapter.apply {
+            //바로 현재 달로 이동해야 하므로 smooth = false
+            viewPager.setCurrentItem(this.firstFragmentPosition,false)
+        }
     }
 
 }

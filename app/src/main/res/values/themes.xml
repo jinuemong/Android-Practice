@@ -31,4 +31,7 @@
         <item name="android:textColor">@color/strong_color</item>
         <item name="android:gravity">center_vertical</item>
     </style>
+    <style name="grayColorText">
+        <item name="android:textColor">@color/gray</item>
+    </style>
 </resources>

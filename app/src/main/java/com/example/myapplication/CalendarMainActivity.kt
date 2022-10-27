@@ -3,7 +3,7 @@ package com.example.myapplication
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-// 메인 액티비티
+// 메인 액티비티 매인에서 CalenderFirst 띄우기
 class CalendarMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

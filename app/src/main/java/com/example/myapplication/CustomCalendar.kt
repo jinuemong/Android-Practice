@@ -4,6 +4,7 @@ import java.util.*
 import java.util.Calendar
 import kotlin.collections.ArrayList
 
+//커스텀 캘린더를 나타내기 위함
 class CustomCalendar(date: Date){
     //주당 7일 * 6주 총 42개의 데이터 전달
     companion object {
