@@ -1,4 +1,4 @@
-package com.example.todolistjinuemong
+package com.example.StudyJM
 
 import android.annotation.SuppressLint
 import android.graphics.Paint
@@ -15,8 +15,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todolistjinuemong.databinding.ActivityToDoMainBinding
-import com.example.todolistjinuemong.databinding.ItemToDoBinding
+import com.example.myapplication.R
+import com.example.myapplication.databinding.ActivityToDoMainBinding
+import com.example.myapplication.databinding.ItemToDoBinding
 
 @SuppressLint("NotifyDataSetChanged")
 class ToDoMainActivity : AppCompatActivity() {
@@ -67,7 +68,7 @@ class ToDoAdapter(
     //함수를 통해서 외부로 position 넘겨줌)
 ):RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder>(){
 
-    class ToDoViewHolder(val binding:ItemToDoBinding):RecyclerView.ViewHolder(binding.root)
+    class ToDoViewHolder(val binding: ItemToDoBinding):RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoViewHolder {
         val view = LayoutInflater.from(parent.context)

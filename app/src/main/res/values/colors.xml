@@ -7,5 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="textview_color">#FFEB3B</color>
+    
+    <color name="normal_color">#2C608F</color>
+    <color name="strong_color">#012F5A</color>
+    <color name="weak_color">#629CD1</color>
+
+    <color name="textview_color">#012F5A</color>
 </resources>
