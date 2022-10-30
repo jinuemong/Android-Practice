@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
-
+// - mainFragment 의  fragmentCalendar
 //calendarFirst 에서 viewpager - calendarStateAdapter 로 CalendarFragment 에 연결
 class CalendarFirstFragment : Fragment() {
 
