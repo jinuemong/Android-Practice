@@ -1,10 +1,12 @@
 package com.example.myapplication.SwipeCardView
 
+import android.graphics.Canvas
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySwipeCardViewBinding
 import com.opencsv.CSVReader
@@ -23,10 +25,7 @@ class SwipeCardViewActivity : AppCompatActivity() {
 
         dataSet = arrayListOf()
         loadData()
-
-        val swipeController = SwipeController()
-        val itemTouchHelper = ItemTouchHelper(swipeController)
-        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+        setSwipe()
     }
     private fun loadData(){
         val assertManager = this@SwipeCardViewActivity.assets
@@ -46,7 +45,30 @@ class SwipeCardViewActivity : AppCompatActivity() {
 
         adapter = CardViewAdapter(this@SwipeCardViewActivity, dataSet!!)
         binding.recyclerView.adapter= adapter
+    }
 
+    private fun setSwipe(){
+        // swipe 데이터 구현
+        val swipeController = SwipeController()
+        swipeController.apply {
+
+            setButtonActionListener(object : SwipeControllerActions{
+                override fun onLeftClicked(position: Int) {
+                    super.onLeftClicked(position)
+                }
+
+                override fun onRightClicked(position: Int) {
+                    adapter.delData(position)
+                }
+            })
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeController)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+        binding.recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+                swipeController.onDraw(c)
+            }
+        })
 
     }
 }

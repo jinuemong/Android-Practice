@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
@@ -28,6 +29,14 @@ class SwipeController : ItemTouchHelper.Callback() {
     private val buttonWidth : Float = 300F // 나타낼 버튼의 크기
     // 현재 보여지는 버튼
     private var buttonInstance : RectF? = null
+    // 버튼 클릭 리스너
+    private var buttonActions:SwipeControllerActions? =null
+    fun setButtonActionListener(listener:SwipeControllerActions){
+        this.buttonActions = listener
+    }
+    // 현재 선택 뷰 홀더
+    private var currentItemViewHolder : ViewHolder? = null
+
     @SuppressLint("RtlHardcoded")
     override fun getMovementFlags(
         recyclerView: RecyclerView,
@@ -51,7 +60,7 @@ class SwipeController : ItemTouchHelper.Callback() {
     override fun convertToAbsoluteDirection(flags: Int, layoutDirection: Int): Int {
 
         if (swipeBack){
-            swipeBack = false
+            swipeBack = buttonShowedState != ButtonsState.GONE
             return 0
         }
 
@@ -69,12 +78,21 @@ class SwipeController : ItemTouchHelper.Callback() {
     ) {
         // 스와이프 상태일 때 적용
         if (actionState==ACTION_STATE_SWIPE){
-            setTouchListener(c,recyclerView,viewHolder,dX,dY
-            ,actionState, isCurrentlyActive)
+            if (buttonShowedState != ButtonsState.GONE){
+                var dX = dX
+                // 스와이프 뷰를 정지시킴
+                if (buttonShowedState == ButtonsState.LEFT_VISIBLE) dX = Math.max(dX,buttonWidth)
+                if (buttonShowedState == ButtonsState.RIGHT_VISIBLE) dX = Math.min(dX,-buttonWidth)
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            }else{
+                setTouchListener(c,recyclerView,viewHolder,dX,dY
+                    ,actionState, isCurrentlyActive)
+            }
         }
-        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-        //버튼 그리기
-        drawButtons(c,viewHolder)
+        if (buttonShowedState == ButtonsState.GONE){
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        }
+        currentItemViewHolder = viewHolder
     }
 
     // 기본 터치 리스너
@@ -121,7 +139,7 @@ class SwipeController : ItemTouchHelper.Callback() {
         viewHolder: ViewHolder,dX: Float,dY: Float,
         actionState: Int,isCurrentlyActive: Boolean
     ){
-        recyclerView.setOnTouchListener(object  : OnTouchListener{
+        recyclerView.setOnTouchListener(object : OnTouchListener{
             override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
                 p1?.let{event->
                     if (event.action == MotionEvent.ACTION_DOWN){
@@ -157,6 +175,18 @@ class SwipeController : ItemTouchHelper.Callback() {
                         setItemClickable(recyclerView,true)
                         swipeBack = false
 
+                        if (buttonActions != null && buttonInstance != null
+                            && buttonInstance!!.contains(event.x,event.y)){
+                            if (buttonShowedState == ButtonsState.LEFT_VISIBLE){
+                                buttonActions?.onLeftClicked(viewHolder.absoluteAdapterPosition)
+                            }
+                            else if (buttonShowedState == ButtonsState.RIGHT_VISIBLE){
+                                Log.d("right clikk!! ","delete")
+                                buttonActions?.onRightClicked(viewHolder.absoluteAdapterPosition)
+                            }
+                        }
+                        buttonShowedState = ButtonsState.GONE
+                        currentItemViewHolder = null
                     }
                 }
                 return false
@@ -208,5 +238,9 @@ class SwipeController : ItemTouchHelper.Callback() {
         for (i in 0 until recyclerView.childCount){
             recyclerView.getChildAt(i).isClickable = boolean
         }
+    }
+
+    public fun onDraw(c: Canvas){
+        currentItemViewHolder?.let { drawButtons(c, it) }
     }
 }

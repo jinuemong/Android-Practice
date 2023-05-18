@@ -36,4 +36,10 @@ class CardViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.hold()
     }
+
+    fun delData(position: Int){
+        dataSet.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position,itemCount)
+    }
 }
