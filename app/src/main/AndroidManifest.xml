@@ -16,8 +16,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
-            android:name=".SwipeCardView.SwipeCardViewActivity"
-            android:exported="true">
+            android:name=".JetpackStudy.JetPackLayoutActivity"
+            android:exported="true"
+            android:label="@string/title_activity_jet_pack_layout"
+            android:theme="@style/Theme.StudyJM" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,12 +27,20 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".JetpackStudy.JetPackActivity"
+            android:exported="false"
+            android:label="@string/title_activity_jet_pack"
+            android:theme="@style/Theme.StudyJM">
+        </activity>
+        <activity
+            android:name=".SwipeCardView.SwipeCardViewActivity"
+            android:exported="false"></activity>
+        <activity
             android:name=".TestSaveInstanceState"
             android:exported="false" />
         <activity
             android:name=".CalendarMainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".permissionActivity"
             android:exported="false" />

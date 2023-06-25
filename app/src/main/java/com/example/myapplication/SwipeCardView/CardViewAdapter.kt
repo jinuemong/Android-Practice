@@ -17,7 +17,6 @@ class CardViewAdapter(
     ) : RecyclerView.ViewHolder(binding.root){
         fun hold(){
             val item = dataSet[absoluteAdapterPosition]
-            Log.d("data in rey",item.toString())
             binding.name.text = item.name
             binding.dataX.text = item.date_x
             binding.genre.text = item.genre
