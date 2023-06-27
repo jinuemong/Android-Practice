@@ -16,10 +16,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".JetpackStudy.JetPackLayoutActivity"
             android:exported="true"
             android:label="@string/title_activity_jet_pack_layout"
-            android:theme="@style/Theme.StudyJM" >
+            android:theme="@style/Theme.StudyJM">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,11 +33,10 @@
             android:name=".JetpackStudy.JetPackActivity"
             android:exported="false"
             android:label="@string/title_activity_jet_pack"
-            android:theme="@style/Theme.StudyJM">
-        </activity>
+            android:theme="@style/Theme.StudyJM"></activity>
         <activity
             android:name=".SwipeCardView.SwipeCardViewActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".TestSaveInstanceState"
             android:exported="false" />
