@@ -1,0 +1,53 @@
+
+https://developer.android.com/training/dependency-injection/hilt-android?hl=ko#android-classes
+[Hilt를 사용하는 모든 앱은 @HiltAndroidApp]
+ 으로 주석이 지정된 Application 클래스를 포함해야 한다,
+
+@HiltAndroidApp
+class ExampleApplication : Application() { ... }
+
+
+[Android 클래스에 종속 항목 삽입]
+1. Application 클래스에 Hilt를 설정하면 애플리케이션 수준 구성요소를 사용할 수 있게 된다./
+2. 이 후에 @AndroidEntryPoint 주석이 있는 다른 Android 클래스에 종속 항목을 제공할 수 있다.
+@AndroidEntryPoint
+class ExampleActivity : AppCompatActivity() { ... }
+
+[Hilt는 현재 다음 Android 클래스를 지원합니다.]
+
+1.Application(@HiltAndroidApp을 사용하여)
+2.ViewModel(@HiltViewModel을 사용하여)
+3.Activity
+4.Fragment
+5.View
+6.Service
+7.BroadcastReceiver
+
+[Hilt 예외 상황]
+1.Hilt는 AppCompatActivity와 같은 ComponentActivity를 확장하는 활동만 지원합니다.
+2.Hilt는 androidx.Fragment를 확장하는 프래그먼트만 지원합니다.
+3.Hilt는 보존된 프래그먼트를 지원하지 않습니다.
+
+
+[AndroidEntryPoint 구성 항목에서 종속 항목 받기]
+@inject 주석을 사용하여 필드 삽입
+주의할 점은 Hilt를 사용해서 비공개 필드를 삽입할 수 없다 (no private)
+@AndroidEntryPoint
+class ExampleActivity : AppCompatActivity() {
+
+  @Inject lateinit var analytics: AnalyticsAdapter
+  ...
+}
+
+
+[Hilt 결합 정의]
+필드 삽입을 실행하려면 Hilt가 해당 구성요소에서 필요한 종속 항목의 인스턴스를 제공해야 한다.
+결합에는 특정 유형의 인스턴스를 종속 항목으로 제공하는 데 필요한 정보가 포함된다.
+힌트에서 결합 정보를 제공하는 방법 : 생성자 삽입 (@Inject 주석 사용)
+주석이 지정된 클래스 생성자의 매개변수는 그 클래스의 종속 항목이다.
+아래에서 AnalyticsAdapter에는 AnalyticsService가 종속 항목으로 있다.
+AnalyticsService의 인스턴스를 제공하는 방법을 알아야 함.
+
+class AnalyticsAdapter @Inject constructor(
+  private val service: AnalyticsService
+) { ... }

@@ -1,0 +1,95 @@
+
+
+[Hilt 모듈]
+
+생성자를 삽입할 수 없는 유형이 있다.
+이러한 상황은 여러 가지 이유로 인해 발생할 수 있다.
+또한 외부 라이브러리 클래스와 같이 소유하지 않은 유형도 생성자를 삽입할 수 없다.
+이를 대비해서 Hilt 모듈을 사용하여 결합 정보를 제공해야 한다.
+
+@Module 어노테이션 활용
+- 특정 유형의 인스턴스를 제공하는 방법을 Hilt에 알려줌
+- Dagger 모듈과는 달리 @InstallIn 주석을 지정해서 각 모듈을 사용하거나,
+  설치할 Android 클래스를 알려야 함.
+
+
+[@Binds를 사용하여 인터페이스 인스턴스 삽입]
+@Binds 주석은 인터페이스의 인스턴스를 제공해야 할 때 사용할 구현을 Hilt에 알려줍니다.
+주석이 지정된 함수는 Hilt에 다음 정보를 제공합니다.
+함수 반환 유형은 함수가 어떤 인터페이스의 인스턴스를 제공하는지 Hilt에 알려줍니다.
+함수 매개변수는 제공할 구현을 Hilt에 알려줍니다.
+- > AnalyticsService.kt
+
+[@Provides를 사용하여 인스턴스 삽입]
+외부 라이브러리에서 클래스가 제공 되는 경우 : Retrofit, OkHttpClient or Room or 빌더 패턴
+으로 인스턴스를 생성해야 하는 경우에도 생성자 삽입이 불가능
+
+위의 AnalyticsService 클래스는 직접 소유하지 않았기에 모듈 함수를 이용했다.
+따라서 이번의 경우에도 @Provides 주석을 통해서 Hilt에 알릴 수 있다.
+
+주석이 달린 함수는 Hilt에 다음 정보를 제공합니다.
+1.함수 반환 유형은 함수가 어떤 유형의 인스턴스를 제공하는지 Hilt에 알려줍니다.
+2.함수 매개변수는 해당 유형의 종속 항목을 Hilt에 알려줍니다.
+3.함수 본문은 해당 유형의 인스턴스를 제공하는 방법을 Hilt에 알려줍니다.
+4.Hilt는 해당 유형의 인스턴스를 제공해야 할 때마다 함수 본문을 실행합니다.
+
+[ 동일한 유형에 대해 여러 결합 제공 ]
+
+종속 항목과 동일한 유형의 다향한 구현을 제공하는 Hilt가 필요한 경우에는 Hilt에서 여러 결합을 제공해야 한다.
+@Qualifier 사용해서 동일한 유형에 대해 여러 결합을 정의할 수 있다.
+
+- 특정 유형에 대해 여러 결합이 정의되어 있을 때, 그 유형의 특정 결합을 식별
+-> Qualifier.kt
+
+- [ Hilt의 사전 정의된 한정자 ]
+
+Hilt는 Context 클래스를 사용하기 위해서 @ApplicationContext, @ActivityContext를 제공
+-> Qualifier.kt에 사용 설명서
+
+
+[ Android 클래스용으로 생성된 구성요소 ]
+    [요소]         -   [대상]      -    [생명주기]
+SingletonComponent - Application  : Application#onCreate(),Application 소멸됨
+ActivityRetainedComponent - N/A : Activity#onCreate(),Activity#onDestroy()
+-> 이 경우는 ActivityRetainedComponent 전체에 걸쳐 유지되므로 첫 번째 액티비티에서 생성, 마지막 액티비티에서 소멸
+ViewModelComponent - ViewModel : ViewModel 생성됨,ViewModel 소멸됨
+ActivityComponent - Activity : Activity#onCreate(),Activity#onDestroy()
+FragmentComponent - Fragment : Fragment#onAttach(),Fragment#onDestroy()
+ViewComponent - View  : View#super(), View 소멸됨
+ViewWithFragmentComponent - @WithFragmentBindings 주석이 지정된 View : View#super(),View 소멸됨
+ServiceComponent - Service : Service#onCreate(),Service#onDestroy()
+
+
+[ 구성 요소 범위 ]
+
+기본적으로 Hilt의 모든 결합은 범위가 지정되지 않음.
+앱이 결합을 요청할 때마다 Hilt는 필요한 유형의 새 인스턴스를 생성
+Hilt에서 결합을 특정 구성요소로 범위 지정할 수 있다.
+Hilt는 결합의 범위가 지정된 구성요소의 인서턴스마다 한 번만 범위가 지정된 결합을 생성,
+이 결합에 관한 모든 요청은 동일한 인스턴스를 공유.
+
+ [ Android 클래스 ]     -   [ 생성된 구성요소 ]   -   [ 범위 ]
+
+ application        -   SingletonComponent        - @Singleton
+ Activity           -   ActivityRetainedComponent - @ActivityRetainedScoped
+ ViewModel          -   ViewModelComponent        - @ViewModelScoped
+ Activity           -   ActivityComponent         - @ActivityScoped
+ Fragment           -   FragmentComponent         - @FragmentScoped
+ View               -   ViewComponent             - @ViewScoped
+ @WithFragment      -   ViewWithFragmentComponent - @ServiceScoped
+ -Bindings
+ 주석이 지정된 View
+ Service            -   ServiceComponent          - @ServiceScoped
+
+
+[ Hilt가 지원하지 않는 클래스에 종속 항목 삽입 ]
+
+Hilt는 일반적인 Android 클래스에 관한 지원이 함께 제공
+반면에 Hilt가 지원하지 않는 클래스에 필드 삽입을 해야하는 경우가 있다
+이런 경우 @EntryPoint 주석을 사용해서 진입점을 만들어야 함
+진입점은 Hilt가 관리하는 코드와 그렇지 않은 코드 사이의 경계
+즉 Hilt가 관리하는 객체의 그래프에 코드가 처음 들어가는 지점
+
+Hilt는 Content Provider를 지원하지 않으므로 이 어노테이션을 활용해야 함
+-> ExampleContentProvider.kt
+
