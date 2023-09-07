@@ -6,7 +6,7 @@ import android.os.Bundle
 import retrofit2.Retrofit
 
 
-// 로그인 액티비티 1 -> 보일러 플레이트 발생 + 재사용성 떨어짐
+//// 로그인 액티비티 1 -> 보일러 플레이트 발생 + 재사용성 떨어짐
 //class LoginActivity: Activity() {
 //
 //    private lateinit var loginViewModel: LoginViewModel
