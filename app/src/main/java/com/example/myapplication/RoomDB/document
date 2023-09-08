@@ -1,0 +1,29 @@
+
+
+! 룸
+
+Room Persistence library
+ORM(Object Relational Mapping)으로써, SQLite 데이터베이스를 사용하기 쉽도록 함
+데이터베이스를 객체로 매핑해주는 역할
+SQLite를 An1
+
+
+1. entity
+- 관계형 데이터 베이스의 Table
+- 데이터가 있는 줄이 Row
+
+2. Database
+- DBMS의 엑세스 포인트, 데이터베이스 홀더
+- 위의 Entity들이 묶인 것이 Database
+- ex : 학교전산시스템의 entity
+ -> teacher, student, parent, admin
+ -> 이런 entity를 통틀어서 database
+ -> Room에서는 Database 클래스를 상속받는 abstract Calss
+ -> entity의 리스트들을 가지고 있음
+
+3. Dao
+- Database 내의 Entity들의 Row들에 저장된 데이터를 접근하기 위한,
+  data access objects의 줄임말
+- data에 엑세스하는 객체
+- 엑세스에 필요로 하는 메소드들을 가지고 있게 구성해서 사용
+- 앱에서 데이터를 얻어오거나 쓰기 위해서 이 클래스 함수들을 사용용
