@@ -1,0 +1,11 @@
+
+
+[ paging 구현 순서 ]
+- data model 정의 ( Entity, Dto, Domain Model, Mappers)
+- RoomDB 구현
+- Retrofit 등 리모트 서버에 요청하고 받아오는 코드 구현
+- RemoteMediator 생성
+    -> 외부 서버에서 받은 데이터를 디비로 넘겨주는 역할
+    -> 페이지 단위의 데이터를 주고 받을 때 디비와 서버측에서 해야할 것을 구현
+- RoomDB의 Dao와 Repository에서 Pager를 리턴할 함수 정의 -> Flow 타입
+- ViewModel에서 PagingData를 collect 하고 LazyColumn에서 데이터를 보여줌
